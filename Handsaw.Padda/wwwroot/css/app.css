@@ -1,0 +1,118 @@
+@font-face {
+  font-family: VT323;
+  src: url('../fonts/VT323-Regular.woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  position: fixed;
+  margin: 0;
+  height: 100%
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100%
+}
+
+#blazor-error-ui {
+  background: lightyellow;
+  bottom: 0;
+  box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+  display: none;
+  left: 0;
+  padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+}
+
+  #blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+  }
+
+body {
+  background: black;
+}
+
+.block-fill {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  font-family: "VT323", monospace;
+}
+
+p {
+  font-family: "VT323", monospace;
+  color: black;
+}
+
+button {
+  font-family: "VT323", monospace;
+  cursor: pointer;
+}
+
+
+/* fills width */
+
+@media (max-aspect-ratio: 9/16) {
+  h1 {
+    font-size: 9vw;
+  }
+}
+
+@media (max-aspect-ratio: 9/16) {
+  p {
+    font-size: 6vw;
+  }
+}
+
+@media (max-aspect-ratio: 9/16) {
+  button {
+    font-size: 6vw;
+  }
+}
+
+
+/* fills height */
+
+@media (min-aspect-ratio: 9/16) {
+  h1 {
+    font-size: calc( 9vh * (9/16));
+  }
+}
+
+@media (min-aspect-ratio: 9/16) {
+  p {
+    font-size: calc( 6vh * (9/16));
+  }
+}
+
+@media (min-aspect-ratio: 9/16) {
+  button {
+    font-size: calc( 6vh * (9/16));
+  }
+}
+
+.visible {
+  visibility: visible;
+  transition: opacity linear all 1s;
+  opacity: 1;
+}
+
+.invisible {
+  visibility: hidden;
+  opacity: 0;
+}

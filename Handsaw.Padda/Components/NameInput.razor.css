@@ -1,0 +1,44 @@
+﻿.letter-container {
+    display: flex;
+    width: 50%;
+}
+
+@media (min-aspect-ratio: 0.5625) {
+    .letter-container {
+        font-size: calc( 25vh * 0.5625);
+    }
+}
+
+.letter {
+    font-size: 10vw;
+    font-family: "VT323", monospace;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.letter button {
+    width: 100%;
+    background: none;
+    border: none;
+    font-size: inherit;
+    padding: 0;
+}
+
+.letter button:last-child {
+    transform: rotateZ(180deg);
+}
+
+@media (min-aspect-ratio: 0.5625) {
+    .letter {
+        font-size: calc( 10vh * 0.5625);
+    }
+}
+
+.save-button {
+    margin-top: 5%;
+    background: none;
+    border: none;
+    font-family: "VT323", monospace;
+}

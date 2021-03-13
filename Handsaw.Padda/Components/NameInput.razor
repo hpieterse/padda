@@ -1,0 +1,50 @@
+﻿<div class="letter-container">
+    <div class="letter">
+        <button @onclick="() => UpdateLetter(0,1)">^</button>
+        <span>@(_name.ElementAt(0))</span>
+        <button @onclick="() => UpdateLetter(0,-1)">^</button>
+    </div>
+
+    <div class="letter">
+        <button @onclick="() => UpdateLetter(1,1)">^</button>
+        <span>@(_name.ElementAt(1))</span>
+        <button @onclick="() => UpdateLetter(1,-1)">^</button>
+    </div>
+
+    <div class="letter">
+        <button @onclick="() => UpdateLetter(2,1)">^</button>
+        <span>@(_name.ElementAt(2))</span>
+        <button @onclick="() => UpdateLetter(2,-1)">^</button>
+    </div>
+</div>
+<button class="save-button" @onclick="@OnSubmit">SAVE</button>
+@code{
+    private string _name = "AAA";
+
+    private void UpdateLetter(int index, int change)
+    {
+        var newLetter = _name.ElementAt(index) + change;
+        if (newLetter > 'Z')
+        {
+            newLetter = 'A';
+        }
+        else if (newLetter < 'A')
+        {
+            newLetter = 'Z';
+        }
+
+        var charArray = _name.ToCharArray();
+        charArray[index] = (char)newLetter;
+
+        _name = new string(charArray);
+    }
+
+
+    [Parameter]
+    public EventCallback<string> OnNameSelected { get; set; }
+
+    private async Task OnSubmit(MouseEventArgs e)
+    {
+        await OnNameSelected.InvokeAsync(_name);
+    }
+}

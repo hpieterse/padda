@@ -1,0 +1,22 @@
+﻿@using Handsaw.Padda.Components
+
+<CanvasOverlay>
+    <div class="block-fill loading" @onclick="@OnStartHandler">
+        <h1>LOADING</h1>
+        <p class="@(Ready? "ready" : "")">Press to Start</p>
+    </div>
+</CanvasOverlay>
+
+@code{
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnStart { get; set; }
+
+    [Parameter]
+    public bool Ready { get; set; }
+
+    public async Task OnStartHandler()
+    {
+      await OnStart.InvokeAsync();
+    }
+
+}

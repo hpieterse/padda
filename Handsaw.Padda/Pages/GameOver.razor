@@ -1,0 +1,108 @@
+﻿@using Handsaw.Padda.Components
+@using Handsaw.Padda.Models
+@using Handsaw.Padda.Engine.Services 
+
+@inject IAudioService AudioService
+
+<CanvasOverlay>
+    @if (HighScore)
+    {
+    <div @onclick="@OnClick" class="block-fill">
+        <h1>High Score</h1>
+        <p>Enter your name</p>
+        <NameInput OnNameSelected="OnNameSelected" />
+    </div>
+    }
+    else
+    {
+        <div @onclick="@OnClick" class="block-fill">
+            <h1 class="high-score-heading">Game Over</h1>
+            <p class="@(_allowReset ? "visible" : "invisible")">Press to Start</p>
+        </div>
+    }
+</CanvasOverlay>
+@code{
+    private bool _allowReset = false;
+    private bool _reset = false;
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+      await base.OnAfterRenderAsync(firstRender);
+
+      if (firstRender && !HighScore)
+      {
+        _reset = true;
+        await Task.Delay(800);
+        _allowReset = true;
+
+        await Task.Delay(10 * 1000);
+        if (!_reset)
+        {
+          await OnReset.InvokeAsync();
+        }
+      }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+      base.OnAfterRender(firstRender);
+
+      if (firstRender)
+      {
+        if (HighScore)
+        {
+          AudioService.PlayAudio(HighScoreAudioId);
+        }
+        else
+        {
+          AudioService.PlayAudio(GameOverAudioId);
+        }
+      }
+    }
+
+    [Parameter]
+    public EventCallback OnReset { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnRestart { get; set; }
+
+    [Parameter]
+    public EventCallback<HighScore> OnHighscoreSet { get; set; }
+
+    [Parameter]
+    public Guid HighScoreAudioId { get; set; }
+
+    [Parameter]
+    public Guid GameOverAudioId { get; set; }
+
+    [Parameter]
+    public bool HighScore { get; set; }
+
+    [Parameter]
+    public int Score { get; set; }
+
+    private async Task OnClick(MouseEventArgs eventArgs)
+    {
+      if (_allowReset)
+      {
+        _reset = true;
+        await  OnRestart.InvokeAsync(eventArgs);
+        await AudioService.StopAudio(GameOverAudioId);
+        await AudioService.StopAudio(HighScoreAudioId);
+      }
+    }
+
+    private async Task OnNameSelected(string name)
+    {
+      await OnHighscoreSet.InvokeAsync(new HighScore {
+        Name = name,
+        Score = Score,
+      });
+
+      await OnReset.InvokeAsync(null);
+
+      await AudioService.StopAudio(GameOverAudioId);
+      await AudioService.StopAudio(HighScoreAudioId);
+    }
+}

@@ -1,0 +1,10 @@
+﻿.loading {
+  background: black;
+  z-index: 10;
+  /* add border to hide artifacts due to the canvas below*/
+  border: 2px black solid;
+}
+
+h1, p.ready {
+  color: white;
+}

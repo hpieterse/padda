@@ -1,0 +1,119 @@
+@using System.Drawing
+@using Handsaw.Padda.Engine.Services
+@using Handsaw.Padda.Engine.Models
+@using Handsaw.Padda.Engine.Components
+@using Microsoft.JSInterop
+@inject IWindowResizeService WindowResizeService
+@inject ICanvasService CanvasService
+@inject IAnimationService AnimationService
+@inject IJSUnmarshalledRuntime JSUnmarshalledRuntime
+@inject IJSRuntime JSRuntime
+
+
+<Canvas @ref="_canvas"
+        AspectRatio="@AspectRatio"
+        OnClick="@OnCanvasClickHandler"></Canvas>
+
+
+@code {
+    [Parameter]
+    public float AspectRatio { get; set; }
+
+    [Parameter]
+    public GameState GameState { get; set; }
+
+    private Canvas _canvas;
+
+    [Parameter]
+    public EventCallback<long> OnAnimate { get; set; }
+
+    [Parameter]
+    public EventCallback<ClickEventDetails> OnClick { get; set; }
+
+
+    public async Task LoadImage(string src)
+    {
+      await CanvasService.LoadImage(src);
+    }
+
+    protected override void OnInitialized()
+    {
+      WindowResizeService.OnWindowResize += async (size) =>
+      {
+        var width = size.Width;
+        var height = size.Height;
+
+        var newAspectRatio = width / height;
+
+        var newWith = width;
+        var newHeight = height;
+
+        if (newAspectRatio > AspectRatio)
+        {
+          // too wide
+          newWith = AspectRatio * newHeight;
+        }
+        else
+        {
+          // too high
+          newHeight = newWith / AspectRatio;
+        }
+
+        await _canvas.SetSize(new SizeF(newWith, newHeight));
+      };
+
+      AnimationService.OnAnimationFrame += (millisecondsElapsed) =>
+      {
+        return RenderLoop(millisecondsElapsed);
+      };
+    }
+
+    private async Task RenderLoop(long millisecondsElapsed)
+    {
+      var fps = Math.Floor(1f / millisecondsElapsed * 1000f);
+      if (fps < 25)
+      {
+        Console.WriteLine($"FPS WARNING: {fps} fps");
+      }
+
+      await _canvas.Clear();
+
+      foreach (var sprite in GameState.Sprites)
+      {
+        if (!sprite.Loaded)
+        {
+          await sprite.Load(_canvas);
+        }
+
+        if (!sprite.Spawned)
+        {
+          sprite.Spawn(AspectRatio);
+        }
+        else
+        {
+          sprite.Update(millisecondsElapsed, AspectRatio);
+        }
+
+        sprite.QueRender(_canvas);
+      }
+
+      await _canvas.DrawQue();
+      GameState.Update();
+
+      await OnAnimate.InvokeAsync(millisecondsElapsed);
+    }
+
+    private async Task OnCanvasClickHandler(PointF clickPoint)
+    {
+      var clickedSprites = GameState.Sprites
+        .Where(
+        (sprite) => sprite.Contains(clickPoint)
+        ).ToArray();
+
+      await OnClick.InvokeAsync(new ClickEventDetails
+      {
+        ClickedObjects = clickedSprites,
+        Location = clickPoint,
+      });
+    }
+}

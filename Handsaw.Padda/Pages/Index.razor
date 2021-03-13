@@ -1,0 +1,212 @@
+﻿@using Handsaw.Padda.Engine.Models
+@using Handsaw.Padda.Models.CanvasObjects
+@using Handsaw.Padda.Models
+@using Handsaw.Padda.Engine.Services
+@using Handsaw.Padda.Services
+@inject IAudioService AudioService
+@inject IStorageService StorageService
+@page "/"
+
+@{ 
+
+    <div class="container @(_internalGameState.GameTimeLeftSeconds == 0 ? "blurred" : "" )">
+        <GameCanvas @ref="@_gameCanvas"
+                    AspectRatio="@_aspectRatio"
+                    GameState="@_gameState"
+                    OnAnimate="@OnAnimate"
+                    OnClick="@OnClickHandler"></GameCanvas>
+    </div>
+
+    if (_loading)
+    {
+        <LoadingScreen Ready="@_ready" OnStart="@StartHandler"></LoadingScreen>
+    }
+    else
+    {
+        
+        <CascadingValue Value="_internalGameState.HighScores">
+            @if (!_internalGameState.GameStarted)
+            {
+
+                <GameStart OnReset="@RestartGame"></GameStart>
+            }
+            @if (_internalGameState.GameTimeLeftSeconds == 0)
+            {
+                <GameOver
+                    OnRestart="@RestartGame"
+                    OnReset="@ResetGame"
+                    HighScoreAudioId="@_highScoreAudio"
+                    GameOverAudioId="@_gameOverAudio"
+                    HighScore="@(_internalGameState.HighScores.Any(c => c.Score  < _internalGameState.Score))"
+                    Score="@_internalGameState.Score"
+                    OnHighscoreSet="@OnHighScoreSet"
+                ></GameOver>
+            }
+        </CascadingValue>
+     }
+    
+}
+
+@code
+{ //code
+    private float _aspectRatio;
+    private GameCanvas _gameCanvas;
+    private GameState _gameState = new GameState();
+    private InternalGameState _internalGameState = new InternalGameState();
+    private Random _random = new Random();
+
+    private Frog _frog = new Frog();
+    private Tongue _tongue = new Tongue();
+
+    private Timer _timer = new Timer();
+    private Score _score = new Score();
+    private HighScoreDisplay _highScore = new HighScoreDisplay();
+
+    private Guid _themeAudio;
+    private Guid _hitAudio;
+    private Guid _missAudio;
+    private Guid _gameOverAudio;
+    private Guid _highScoreAudio;
+
+    private bool _loading = true;
+    private bool _ready = false;
+
+    public Index()
+    {
+      _aspectRatio = 9f / 16f;
+      AddInitialSprites();
+    }
+
+    private long _msElapsedSinceLastFly = 9999999;
+
+    protected override async Task OnInitializedAsync()
+    {
+      await base.OnInitializedAsync();
+      var audioIds = await AudioService.LoadAudio(
+        "./audio/theme.mp3",
+        "./audio/hit.mp3",
+        "./audio/miss.mp3",
+        "./audio/gameover.mp3",
+        "./audio/highscore.mp3"
+        );
+      _themeAudio = audioIds.ElementAt(0);
+      _hitAudio = audioIds.ElementAt(1);
+      _missAudio = audioIds.ElementAt(2);
+      _gameOverAudio = audioIds.ElementAt(3);
+      _highScoreAudio = audioIds.ElementAt(4);
+
+      var imageLoadTasks = new[] {
+        _gameCanvas.LoadImage("./images/Padda.png"),
+        _gameCanvas.LoadImage("./images/Background.png"),
+      };
+      await Task.WhenAll(imageLoadTasks);
+
+      var scores = await  StorageService.GetHighScores();
+
+      _internalGameState.HighScores = scores;
+      _internalGameState.HighScore = _internalGameState.HighScores.FirstOrDefault()?.Score ?? 0;
+
+      _ready = true;
+    }
+
+    private async Task StartHandler()
+    {
+      await AudioService.PlayAudio(_themeAudio, true);
+      _loading = false;
+    }
+
+    private Task OnAnimate(long msSinceLastAnimate)
+    {
+      _score.Text = (_internalGameState.Score * GameConstants.ScoreFactor).ToString("D10");
+      _highScore.Text = (_internalGameState.HighScore * GameConstants.ScoreFactor).ToString("D10");
+      _timer.Text = _internalGameState.GameTimeLeftSeconds.ToString("D2");
+
+      _msElapsedSinceLastFly += msSinceLastAnimate;
+      _internalGameState.AddElapsedtime(msSinceLastAnimate);
+
+      if (_msElapsedSinceLastFly > 1000)
+      {
+        var random = new Random();
+        if (random.NextDouble() > 0.8 && _gameState.Sprites.Count() < 55)
+        {
+          var timeFlyCreated = _internalGameState.GameStarted
+            ? _internalGameState.TotalGameTimeElapsed
+            : 60 * 10000; // in intro use default creatd time to prevent too many slow flies
+
+          _gameState.AddObject(new Fly(timeFlyCreated));
+          _msElapsedSinceLastFly = 0;
+        }
+      }
+
+      if (!_tongue.Spawned)
+      {
+        _frog.SetMouthClosed();
+      }
+
+      return Task.FromResult<object>(null);
+    }
+
+    private async Task OnClickHandler(ClickEventDetails clickEventDetails)
+    {
+      if (_tongue.Spawned)
+      {
+        return;
+      }
+      var fliesKilled = 0;
+      foreach (var sprite in clickEventDetails.ClickedObjects)
+      {
+        if (sprite is Fly)
+        {
+          sprite.Remove();
+          fliesKilled++;
+        }
+      }
+      _internalGameState.AddScore(fliesKilled);
+
+      _tongue.LineEnd = clickEventDetails.Location;
+      _gameState.AddObject(_tongue);
+      _frog.SetMouthOpen();
+
+      if (fliesKilled > 0)
+      {
+        await AudioService.PlayAudio(_hitAudio);
+      }
+      else
+      {
+        await AudioService.PlayAudio(_missAudio);
+      }
+
+    }
+
+    private async Task RestartGame(MouseEventArgs e)
+    {
+      await AudioService.StopAudio(_themeAudio);
+      _internalGameState.Start();
+      _gameState.ClearObjects();
+      AddInitialSprites();
+    }
+
+    private async Task ResetGame()
+    {
+      await AudioService.PlayAudio(_themeAudio, true);
+      _internalGameState.Reset();
+      _gameState.ClearObjects();
+      AddInitialSprites();
+    }
+
+    private async Task OnHighScoreSet(HighScore score)
+    {
+      _internalGameState.HighScores = await StorageService.AddHighScore(score);
+    }
+
+    private void AddInitialSprites()
+    {
+      _gameState.AddObject(new Background());
+      _gameState.AddObject(_frog);
+      if (_internalGameState.GameStarted)
+      {
+        _gameState.AddObject(_timer);
+        _gameState.AddObject(_score);
+        _gameState.AddObject(_highScore);
+      }
+    } }

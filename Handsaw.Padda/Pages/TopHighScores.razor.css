@@ -1,0 +1,35 @@
+﻿.high-scores {
+  width: 100%;
+}
+
+.score-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.score-line {
+  display: flex;
+  position: relative;
+}
+
+.name {
+  flex: 10;
+  text-align: right;
+  margin: 0;
+  padding-right: 2.5%;
+}
+
+
+.score {
+  flex: 14;
+  text-align: left;
+  margin: 0;
+  padding-left: 2.5%;
+}
+
+@media (min-aspect-ratio: 0.5625) {
+  .score-line {
+    margin-bottom: calc( 2vh * 0.5625);
+  }
+}

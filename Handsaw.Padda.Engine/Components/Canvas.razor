@@ -1,0 +1,161 @@
+﻿@using System.Drawing
+@using Handsaw.Padda.Engine.Services
+@using Handsaw.Padda.Engine.Models
+@using Handsaw.Padda.Engine.Extensions
+@inject ICanvasService CanvasService
+
+<div class="canvas-holder">
+    <canvas id="@_canvasId.ToString()"
+            @ref="@_canvas"
+            @onmousedown="@OnMouseDownHandler"
+            @ontouchstart="@OnTouchStartHandler"></canvas>
+</div>
+
+@code{
+    private Guid _canvasId = Guid.NewGuid();
+    private ElementReference _canvas;
+    private PointF _canvasPosition;
+
+    private List<DrawOperationDetail> _drawQue = new List<DrawOperationDetail>();
+
+    public SizeF Size { get; private set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            CanvasService.Setup(_canvas);
+        }
+    }
+
+    public async Task SetSize(SizeF size)
+    {
+        _canvasPosition = await CanvasService.SetSizeUnmarshalled(_canvasId, size);
+        Size = size;
+    }
+
+    public async Task<Guid> LoadImage(string src)
+    {
+        return await CanvasService.LoadImage(src);
+    }
+
+    [Parameter]
+    public float AspectRatio { get; set; }
+
+    [Parameter]
+    public EventCallback<PointF> OnClick { get; set; }
+
+    public async Task Clear()
+    {
+        await CanvasService.Clear(_canvas);
+    }
+
+    public async Task DrawQue()
+    {
+        var que = _drawQue.ToArray();
+        _drawQue.Clear();
+        await CanvasService.DrawUnmarshalled(_canvasId, que);
+    }
+
+    public void QueDrawArch(PointF position, float radius, float startAngle, float endAngle, bool clockwise, Color color)
+    {
+        var bottomLeftX = Size.Width * position.X;
+        var bottomLeftY = Size.Width * position.Y;
+        var canvaCordRadius = Size.Width * radius;
+        var y = Size.Height - bottomLeftY - canvaCordRadius * 2;
+
+        var colorString = color.ToHexCode();
+        _drawQue.Add(new DrawOperationDetail(new PointF(bottomLeftX, y), radius, startAngle, endAngle, clockwise, colorString));
+    }
+
+    public void QueDrawRect(PointF position, SizeF size, Color color)
+    {
+        var bottomLeftX = Size.Width * position.X;
+        var bottomLeftY = Size.Width * position.Y;
+        var width = Size.Width * size.Width;
+        var height = Size.Width * size.Height;
+        var y = Size.Height - bottomLeftY - height;
+
+        var colorString = color.ToHexCode();
+
+        _drawQue.Add(new DrawOperationDetail(new PointF(bottomLeftX, y), new SizeF(width, height), colorString));
+    }
+
+    public void QueDrawLine(PointF start, PointF end, Color color, float lineWidth)
+    {
+        var startX = Size.Width * start.X;
+        var startY = Size.Width * start.Y;
+        var endX = Size.Width * end.X;
+        var endY = Size.Width * end.Y;
+        var startYCanvasCords = Size.Height - startY;
+
+        var endYCanvasCord = Size.Height - endY;
+
+        var absoluteWidth = lineWidth * Size.Width;
+
+        var colorString = color.ToHexCode();
+        _drawQue.Add(new DrawOperationDetail(new PointF(startX, startYCanvasCords), new PointF(endX, endYCanvasCord), absoluteWidth, colorString));
+    }
+
+    public void QueDrawText(PointF position, string font, float fontSize, string text, Color color)
+    {
+        var startX = Size.Width * position.X;
+        var startY = Size.Width * position.Y;
+        var startYCanvasCords = Size.Height - startY;
+
+        var colorString = color.ToHexCode();
+
+        var trimmedText = text.TrimToByteLength(128);
+
+        var fontSizePx = Math.Floor(fontSize * Size.Width);
+        var fontString = $"{fontSizePx}px {font}".TrimToByteLength(128);
+
+        _drawQue.Add(new DrawOperationDetail(new PointF(startX, startYCanvasCords), fontString, trimmedText, colorString));
+    }
+
+    public void QueDrawImage(Guid imageId, PointF position, SizeF size, Point slicePosition, Size sliceSize)
+    {
+        var bottomLeftX = Size.Width * position.X;
+        var bottomLeftY = Size.Width * position.Y;
+        var width = Size.Width * size.Width;
+        var height = Size.Width * size.Height;
+        var y = Size.Height - bottomLeftY - height;
+
+        _drawQue.Add(new DrawOperationDetail(
+          imageId.ToString(),
+          new PointF(bottomLeftX, y),
+          new SizeF(width, height),
+          slicePosition,
+          sliceSize));
+    }
+
+    private bool _useTouchEvent = false;
+
+    private async Task OnTouchStartHandler(TouchEventArgs e)
+    {
+        _useTouchEvent = true;
+        var x = e.Touches.First().ClientX - _canvasPosition.X;
+        var y = e.Touches.First().ClientY - _canvasPosition.Y;
+        var xInGameCords = (float)(x / Size.Width);
+        var yInGameCords = (Size.Height - y) / Size.Height;
+        var relativeYInGameCords = yInGameCords.CovertYtoRelativeY(AspectRatio);
+
+        await OnClick.InvokeAsync(new PointF(xInGameCords, relativeYInGameCords));
+    }
+
+    private async Task OnMouseDownHandler(MouseEventArgs e)
+    {
+        // if touch events are triggered, ignore mouse events
+        if (_useTouchEvent)
+        {
+            return;
+        }
+        var x = e.OffsetX;
+        var y = e.OffsetY;
+        var xInGameCords = (float)(x / Size.Width);
+        var yInGameCords = (Size.Height - y) / Size.Height;
+        var relativeYInGameCords = yInGameCords.CovertYtoRelativeY(AspectRatio);
+
+        await OnClick.InvokeAsync(new PointF(xInGameCords, relativeYInGameCords));
+    }
+}

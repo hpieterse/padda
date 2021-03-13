@@ -1,0 +1,23 @@
+﻿.container {
+    position: absolute;
+}
+
+@media (max-aspect-ratio: 9/16) {
+    .container {
+        width: calc(100vw);
+        height: calc((100vw / (9/16)));
+        left: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+    }
+}
+
+@media (min-aspect-ratio: 9/16) {
+    .container {
+        width: calc((100vh * (9/16)));
+        height: calc(100vh);
+        left: 50%;
+        top: 0;
+        transform: translate(-50%, 0);
+    }
+}

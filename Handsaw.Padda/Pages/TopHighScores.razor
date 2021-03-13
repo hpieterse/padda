@@ -1,0 +1,21 @@
+﻿@using Handsaw.Padda.Models
+@using Handsaw.Padda.Shared
+
+<div class="high-scores">
+    <h1>High Scores</h1>
+    <div class="score-table">
+        @foreach (var score in Scores)
+        {
+            <div class="score-line">
+                <p class="name">@score.Name</p>
+                <p class="score">@((score.Score * GameConstants.ScoreFactor).ToString("D10"))</p>
+            </div>
+
+        }
+    </div>
+</div>
+
+@code{
+    [CascadingParameter]
+    public IEnumerable<HighScore> Scores { get; set; } = new List<HighScore>();
+}

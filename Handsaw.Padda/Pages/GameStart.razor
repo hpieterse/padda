@@ -1,0 +1,53 @@
+﻿@using Handsaw.Padda.Components
+
+<CanvasOverlay>
+    <div @onclick="@OnClick" class="block-fill">
+        <div class="headings @(_showHighScore ? "hidden" : "shown")">
+            <div class="title"></div>
+            <p class="@(_allowReset ? "visible" : "invisible")">Press to Start</p>
+        </div>
+        <div class="highscore @(_showHighScore ? "shown" : "hidden")">
+            <TopHighScores />
+        </div>
+    </div>
+</CanvasOverlay>
+@code{
+    private bool _allowReset = false;
+    private bool _showHighScore = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+      await base.OnAfterRenderAsync(firstRender);
+
+      if (firstRender)
+      {
+        // 600ms for logo to appear
+        // two seconds before reset option is shown
+        await Task.Delay(2 * 1000  + 600);
+        _allowReset = true;
+        await StartLoop();
+      }
+    }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnReset { get; set; }
+
+    private void OnClick(MouseEventArgs eventArgs)
+    {
+      if (_allowReset)
+      {
+        OnReset.InvokeAsync(eventArgs);
+      }
+    }
+
+    private async Task StartLoop()
+    {
+      while (true)
+      {
+        await Task.Delay(5 * 1000);
+        _showHighScore = !_showHighScore;
+        await Task.Delay(8 * 1000);
+        _showHighScore = !_showHighScore;
+      }
+    }
+}
