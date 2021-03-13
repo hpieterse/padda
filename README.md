@@ -1,6 +1,6 @@
 # README #
 
-Padda is a very simple 2D HTML game that is build using [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor).
+Padda is a very simple 2D HTML game that is build using [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor). See it in action at [https://www.handsaw.co.za/padda](https://www.handsaw.co.za/padda)
 
 ## Did you know?  ##
 Some interesting facts about the project
@@ -24,5 +24,5 @@ The repository does include launch settings for VSCode as well as build, watch, 
 ### Deployment instructions
 There are also no special steps required for deployment. See the [documentation](https://docs.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/?view=aspnetcore-5.0&tabs=visual-studio) on how to deploy a Blazor app.
 
-### Contribution guidelines ###
+## Contribution guidelines
 If you want to contribute, let me know. Or otherwise, feel free to contribute by opening a pull requests
