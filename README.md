@@ -16,7 +16,7 @@ Some interesting facts about the project
 Because this application is built using Blazor, you can run it like any normal Blazor client-side Web Assembly project. The easiest is to use the .NET CLI
 
 ```
-dotnet watch --project ./Handsaw.Padda/Handsaw.Padda.csproj run 
+dotnet watch run --project ./Handsaw.Padda/Handsaw.Padda.csproj
 ```
 
 The repository does include launch settings for VSCode as well as build, watch, and publish tasks.
