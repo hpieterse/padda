@@ -40,7 +40,7 @@ jobs:
         
       - name: Build
         run: |
-          dotnet publish --project ./Handsaw.Padda/Handsaw.Padda.csproj
+          dotnet publish ./Handsaw.Padda/Handsaw.Padda.csproj
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
