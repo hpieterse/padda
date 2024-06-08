@@ -40,7 +40,8 @@ jobs:
         
       - name: Build
         run: |
-          dotnet publish ./Handsaw.Padda/Handsaw.Padda.csproj -c Release --pathbase=/padda/
+          dotnet publish ./Handsaw.Padda/Handsaw.Padda.csproj -c Release
+          sed -i -e 's/<base href="\/"/<base href="\/padda\/"/g' ./Handsaw.Padda/bin/Release/net5.0/publish/wwwroot/index.html 
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
