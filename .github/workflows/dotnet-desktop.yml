@@ -40,12 +40,13 @@ jobs:
         
       - name: Build
         run: |
-          dotnet publish ./Handsaw.Padda/Handsaw.Padda.csproj
+          dotnet publish ./Handsaw.Padda/Handsaw.Padda.csproj -c Release
+          ls ./Handsaw.Padda/bin/Release/net5.0/publish/
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.BUILD_PATH }}/dist
+          path: ./Handsaw.Padda/bin/Release/net5.0/publish/
 
   deploy:
     environment:
