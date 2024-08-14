@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Handsaw.Padda",
   "resources": {
-    "hash": "sha256-kujm7n4aP9J1xCot06hLpewHNiH/zbpWsG3gJzaDMPw=",
+    "hash": "sha256-Kg3mJyWLZcEvMy20uRf5dbU8KgK7F8fS06fXL4gNCLM=",
     "jsModuleNative": {
       "dotnet.native.8.0.7.pvkr2na9g4.js": "sha256-tFsxPBbhkdn6GKNBKvCRLzrfAHdyM86odYTe0MtrwMk="
     },
@@ -18,8 +18,8 @@
     },
     "assembly": {
       "Blazored.LocalStorage.wasm": "sha256-OaMAAd5n7ORfyur5e3QIyEVKJ76MKIvwbg7/icnnYcU=",
-      "Handsaw.Padda.Engine.wasm": "sha256-h8Vk/G2DxiB414rylcYEWbiCh4DYB5YDriIpjCG8WOk=",
-      "Handsaw.Padda.wasm": "sha256-uxIELQ6U0WhUbCZfV2XcBBn3xkSffLVEktm7NtW5sEE=",
+      "Handsaw.Padda.Engine.wasm": "sha256-83rZMxKQJCV8hIPDprxJdPQW45SYzKJ5ijOjixvU+74=",
+      "Handsaw.Padda.wasm": "sha256-xyhbmu/fr9aVxkBXTRzENLY8jzkcriwakh8oB6LFXpU=",
       "Microsoft.AspNetCore.Components.wasm": "sha256-d/Bm9ADBjRMq6i5K5/+HAKIhXSZJEdJMUuJjWIU9XzY=",
       "Microsoft.AspNetCore.Components.Web.wasm": "sha256-gOV7/XeJc7k7GLt+Mi3Ix486PAcUp/HuKeGwkLkft9Q=",
       "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-dUxr/23AOeWfoi3Cr47cxO9wN6xxPMThrV9AyHzkB/4=",

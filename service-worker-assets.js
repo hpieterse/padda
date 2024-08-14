@@ -93,7 +93,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-VNcJyRT2Cq+r3rw0IcKM2Y+DDekbbLQe+FmUMGDIa6k=",
+      "hash": "sha256-TsD9LwoIyeUaKBB+K+sU7mp6Fp5CK9Ft2U1U2MxhivA=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -101,11 +101,11 @@
       "url": "_framework\/Blazored.LocalStorage.wasm"
     },
     {
-      "hash": "sha256-h8Vk\/G2DxiB414rylcYEWbiCh4DYB5YDriIpjCG8WOk=",
+      "hash": "sha256-83rZMxKQJCV8hIPDprxJdPQW45SYzKJ5ijOjixvU+74=",
       "url": "_framework\/Handsaw.Padda.Engine.wasm"
     },
     {
-      "hash": "sha256-uxIELQ6U0WhUbCZfV2XcBBn3xkSffLVEktm7NtW5sEE=",
+      "hash": "sha256-xyhbmu\/fr9aVxkBXTRzENLY8jzkcriwakh8oB6LFXpU=",
       "url": "_framework\/Handsaw.Padda.wasm"
     },
     {
@@ -265,5 +265,5 @@
       "url": "_content\/Handsaw.Padda.Engine\/windowResizeInterop.js"
     }
   ],
-  "version": "PpS9NkiQ"
+  "version": "tlvqfx3X"
 };
