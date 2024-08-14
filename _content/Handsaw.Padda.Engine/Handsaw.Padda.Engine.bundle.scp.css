@@ -1,0 +1,16 @@
+/* _content/Handsaw.Padda.Engine/Components/Canvas.razor.rz.scp.css */
+.canvas-holder[b-c7yopoh794] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas[b-c7yopoh794] {
+    background: white;
+}
