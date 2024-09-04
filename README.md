@@ -1,6 +1,6 @@
 # README #
 
-Padda is a very simple 2D HTML game that is build using [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor). See it in action at [https://www.handsaw.co.za/padda](https://www.handsaw.co.za/padda)
+Padda is a very simple 2D HTML game that is build using [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor). See it in action at [https://hpieterse.github.io/padda/](https://hpieterse.github.io/padda/)
 
 ## Did you know?  ##
 Some interesting facts about the project
