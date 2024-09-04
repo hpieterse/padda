@@ -49,7 +49,7 @@
       "url": "images\/Title.svg"
     },
     {
-      "hash": "sha256-9xND9hslaTI6wbqG6\/EN+Syx6zGuJnSRBBMsdQamgIY=",
+      "hash": "sha256-FXYedf28UJ58p6lZTKBkZlz3G2iFcHTp5tiLepYIVcs=",
       "url": "index.html"
     },
     {
@@ -269,5 +269,5 @@
       "url": "_framework\/blazor.webassembly.js"
     }
   ],
-  "version": "ZW+RkG78"
+  "version": "hiUOdMKQ"
 };
