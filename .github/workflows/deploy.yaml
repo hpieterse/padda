@@ -1,5 +1,8 @@
 name: Deploy To GitHub Pages
 
+env:
+  PUBLISH_DIR: Handsaw.Padda/bin/Release/net5.0/publish/wwwroot
+
 on:
   workflow_dispatch:
 
@@ -7,4 +10,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+        dotnet-version: '5.0.408'
+
+    - name: Publish app
+      run: dotnet publish -c Release Handsaw.Padda
+
+    - name: Add .nojekyll file
+      run: touch ${{ env.PUBLISH_DIR }}/.nojekyll
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: www
+        path: ${{ env.PUBLISH_DIR }}
+
+    - name: Commit wwwroot to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        BRANCH: gh-pages
+        FOLDER: ${{ env.PUBLISH_DIR }}
