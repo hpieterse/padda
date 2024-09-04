@@ -1,0 +1,392 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Handsaw.Padda.Engine</name>
+    </assembly>
+    <members>
+        <member name="T:Handsaw.Padda.Engine.ConfigurationExtension">
+            <summary>
+            Extensions for setup up the game engine
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.ConfigurationExtension.UseEngine(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Set up dependencies
+            </summary>
+            <param name="serviceCollection"></param>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Extensions.DrawingExtensions">
+            <summary>
+            Extensions realted to drawing
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Extensions.DrawingExtensions.ToHexCode(System.Drawing.Color)">
+            <summary>
+            Color to Hex Code
+            </summary>
+            <param name="color">The color to convert</param>
+            <returns>A hex string that can be used in HTML, JS and CSS</returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Extensions.DrawingExtensions.TrimToByteLength(System.String,System.Int32)">
+            <summary>
+            Trim a string to a specific lenght in bytes
+            </summary>
+            <param name="input">The string to trim</param>
+            <param name="maxLength">Number of bytes the string can take</param>
+            <returns>The trimmed string</returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Extensions.DrawingExtensions.DistanceTo(System.Drawing.PointF,System.Drawing.PointF)">
+            <summary>
+            The distance between two points
+            </summary>
+            <param name="start"></param>
+            <param name="end"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Extensions.SizeExtensions">
+            <summary>
+            Extensions used to make working with size and distanced easier
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Extensions.SizeExtensions.CovertYtoRelativeY(System.Single,System.Single)">
+            <summary>
+            Convert a Y factor (fraction of the canvas height) to a X factor
+            </summary>
+            <param name="y">The y size as a factor of the height of the canvas</param>
+            <param name="aspectRatio">The aspect ratio of the canvas</param>
+            <returns></returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Extensions.SizeExtensions.CovertYtoRelativeY(System.Double,System.Single)">
+            <summary>
+            Convert a Y factor (fraction of the canvas height) to a X factor
+            </summary>
+            <param name="y">The y size as a factor of the height of the canvas</param>
+            <param name="aspectRatio">The aspect ratio of the canvas</param>
+            <returns></returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Extensions.SizeExtensions.CovertRelativeYToY(System.Single,System.Single)">
+            <summary>
+            Convert a width relative Y factor (fraction of the canvas width) to a
+            Y factor (faction of the canvas height)
+            </summary>
+            <param name="y">The y size as a factor of the width of the canvas</param>
+            <param name="aspectRatio">The aspect ratio of the canvas</param>
+            <returns></returns>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Models.CanvasImage">
+            <summary>
+            An image to draw on the canvas
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasImage.#ctor(System.String,System.Drawing.Size)">
+            <summary>
+            Create an image object
+            </summary>
+            <param name="imageSource">Source of the image</param>
+            <param name="originalSize">Size of the original image in pixels</param>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasImage.Size">
+            <summary>
+            Size of the image on the canvas as a factor of the width 
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasImage.OriginalSize">
+            <summary>
+            Original size of the image in pixels
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasImage.SlicePosition">
+            <summary>
+            The row and column of the slice to show
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasImage.SliceSize">
+            <summary>
+            Size of a slice in pixels
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasImage.ImageSource">
+            <summary>
+            The source path of the image
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasImage.Contains(System.Drawing.PointF)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasImage.Load(Handsaw.Padda.Engine.Components.Canvas)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasImage.QueRender(Handsaw.Padda.Engine.Components.Canvas)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Models.CanvasLine">
+            <summary>
+            A line on the canvas
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasLine.LineEnd">
+            <summary>
+            The end of the line, as a factor of the width of the canvas
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasLine.Color">
+            <summary>
+            The color of the line
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasLine.LineWidth">
+            <summary>
+            Width of the line, as a factor of the canvas width
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasLine.QueRender(Handsaw.Padda.Engine.Components.Canvas)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasLine.Contains(System.Drawing.PointF)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Models.CanvasObject">
+            <summary>
+            A object on the canvas
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasObject.Position">
+            <summary>
+            Position as a factor of the canvas width. X starts on the left, Y
+            starts on the bottom.
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasObject.Update(System.Int64,System.Single)">
+            <summary>
+            Implement logic to update since last render
+            </summary>
+            <param name="millisecondsElapsed"></param>
+            <param name="aspectRatio"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasObject.Spawn(System.Single)">
+            <summary>
+            Set the initial values right before the first time the sprite is drawn
+            </summary>
+            <param name="aspectRatio"></param>
+            <returns></returns>
+        </member>
+        <member name="E:Handsaw.Padda.Engine.Models.CanvasObject.OnRemove">
+            <summary>
+            Event triggered when the object is removed from the canvas
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasObject.Spawned">
+            <summary>
+            Indicates if the object has been spawned
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasObject.Lifespan">
+            <summary>
+            Total time alive in ms
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasObject.QueRender(Handsaw.Padda.Engine.Components.Canvas)">
+            <summary>
+            Render logic
+            </summary>
+            <param name="canvas"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasObject.Loaded">
+            <summary>
+            Indicates if the object has been loaded
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasObject.Load(Handsaw.Padda.Engine.Components.Canvas)">
+            <summary>
+            Load any resources necessary to render the object. Called before
+            Spawn
+            </summary>
+            <param name="canvas"></param>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasObject.Contains(System.Drawing.PointF)">
+            <summary>
+            Check whether object contains a point. Used for collision detection
+            </summary>
+            <param name="point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasObject.Remove">
+            <summary>
+            Remove the object from the game state
+            </summary>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Models.CanvasSquare">
+            <summary>
+            A square sprite on the canvas
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasSquare.Size">
+            <summary>
+            The size as a factor of the canvas width
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasSquare.Color">
+            <summary>
+            The color of the square
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasSquare.TouchTargetSize">
+            <summary>
+            The factor which the touch target is larger tan the actual size of the
+            sprite
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasSquare.QueRender(Handsaw.Padda.Engine.Components.Canvas)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasSquare.Contains(System.Drawing.PointF)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Models.CanvasText">
+            <summary>
+            Text to render on the canvas
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasText.Font">
+            <summary>
+            Font of the text
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasText.FontSize">
+            <summary>
+            Size of the font, as a factor of the canvas width
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasText.Text">
+            <summary>
+            Text to render
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.CanvasText.Color">
+            <summary>
+            Color of the text
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasText.Contains(System.Drawing.PointF)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.CanvasText.QueRender(Handsaw.Padda.Engine.Components.Canvas)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Models.ClickEventDetails">
+            <summary>
+            Details of a click event on the canvas
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.ClickEventDetails.Location">
+            <summary>
+            Location of the click. Factor of the canvas width
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.ClickEventDetails.ClickedObjects">
+            <summary>
+            The objects that where clicked on
+            </summary>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Models.GameState">
+            <summary>
+            The current state of the Game
+            </summary>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Models.GameState.Sprites">
+            <summary>
+            The objects to draw on the canvas
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.GameState.AddObject(Handsaw.Padda.Engine.Models.CanvasObject)">
+            <summary>
+            Add an object to the Game State
+            </summary>
+            <param name="canvasObject"></param>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Models.GameState.ClearObjects">
+            <summary>
+            Clear all objects from th game state
+            </summary>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Services.IAudioService">
+            <summary>
+            Service to play audio files
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Services.IAudioService.LoadAudio(System.String[])">
+            <summary>
+            Load audio files
+            </summary>
+            <param name="src">The path to the audio file</param>
+            <returns>The ids of the audio file loaded</returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Services.IAudioService.UnloadAudio(System.Guid)">
+            <summary>
+            Unloads an audio file
+            </summary>
+            <param name="id">Id of the audio file</param>
+            <returns></returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Services.IAudioService.PlayAudio(System.Guid,System.Boolean,System.Single,System.Nullable{System.Single})">
+            <summary>
+            Play a loaded audio file
+            </summary>
+            <param name="id"></param>
+            <param name="loop">Whether the audio should be looped</param>
+            <param name="startOffset">seconds from the start of the file to start
+            the playback</param>
+            <param name="playLength">The length of the track to play. If not specified
+            the track will play to the end</param>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Services.IAudioService.StopAudio(System.Guid)">
+            <summary>
+            Stop playing an audio file
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Services.IInteropLoadService">
+            <summary>
+            Service that loads a js file
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Services.IInteropLoadService.LoadUnmarshalled(System.String)">
+            <summary>
+            Load a js file
+            </summary>
+            <param name="jsFileName">the relative path the js file</param>
+            <returns></returns>
+        </member>
+        <member name="T:Handsaw.Padda.Engine.Services.UnmarshalledInteropServiceBase">
+            <summary>
+            Base class for interop services
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Services.UnmarshalledInteropServiceBase.#ctor(Handsaw.Padda.Engine.Services.IInteropLoadService,System.String)">
+            <summary>
+            Default constructor
+            </summary>
+            <param name="loadService">Load service</param>
+            <param name="jsFileName">Relative path to th JS file</param>
+        </member>
+        <member name="P:Handsaw.Padda.Engine.Services.UnmarshalledInteropServiceBase.Module">
+            <summary>
+            The JS module
+            </summary>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Services.UnmarshalledInteropServiceBase.OnInitialized">
+            <summary>
+            Lifecycle event called when the js file has been loaded
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Handsaw.Padda.Engine.Services.UnmarshalledInteropServiceBase.DisposeAsync">
+            <summary>
+            Upload the JS file
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
